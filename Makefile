@@ -19,6 +19,7 @@ CFLAGS  =       -W -Wextra -Werror -Wall -g -Iinclude/ -Ilibmy
 LDFLAGS =       -lzmq -lczmq -lpthread -L ./libmy -lmy
 
 SRC     =       main.c \
+		blockchain.c \
 
 OBJ     =       ${SRC:%.c=%.o}
 

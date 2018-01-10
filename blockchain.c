@@ -42,27 +42,7 @@ void		add_block(unsigned int size)
     }
 }
 
-void		*my_simple_malloc(unsigned int size)
+t_bc	*get_bc()
 {
-  t_block	*space;
-
-  add_block(size);
-  space = sbrk((intptr_t)sizeof (*(bc->last)) + size);
-  space = bc->last;
-  printf("allocated size: %d\n", space->size);
-  printf("block adress: %p\n", space);
-  printf("size of b: %lu\n", sizeof (*space));
-  printf("size of t_block: %lu\n", sizeof (t_block));
-  printf("returned address: %p\n", space + 1);
-  return (space + 1);
-}
-  
-void		my_simple_free(void *ptr)
-{
-  t_block	*b;
-
-  b = (((t_block *)ptr) - 1);
-  printf("block to free address: %p\n", b);
-  printf("allocated size: %d\n", b->size);
-  printf("space to free address: %p\n", b + 1);
+  return bc;
 }

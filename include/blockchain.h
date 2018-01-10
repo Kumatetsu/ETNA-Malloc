@@ -25,7 +25,8 @@ typedef struct	s_bc
   t_block	*last;
 }		t_bc;
 
-void	my_simple_free(void *ptr);
-void	*my_simple_malloc(unsigned int size);
+void	create_bc();
+void	add_block(unsigned int size);
+t_bc	*get_bc();
 
 #endif	/* !_BLOCKCHAIN_H_ */

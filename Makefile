@@ -20,6 +20,8 @@ LDFLAGS =       -lzmq -lczmq -lpthread -L ./libmy -lmy
 
 SRC     =       main.c \
 		blockchain.c \
+		chunk.c \
+		my_malloc.c \
 
 OBJ     =       ${SRC:%.c=%.o}
 

@@ -9,7 +9,7 @@
 */
 
 #include "libmy.h"
-#include "blockchain.h"
+#include "my_malloc.h"
 #include <unistd.h>
 #include <stdlib.h>
 
@@ -22,6 +22,13 @@ int		main(int ac, char *av[]) {
   i = 0;
   limit = 5000;
   size = 1;
+  printf("size of types:\n");
+  printf("size int: %lu\n", sizeof(int));
+  printf("size of char: %lu\n", sizeof(char));
+  printf("size of char*: %lu\n", sizeof(char*));
+  printf("size of unsigned int: %lu\n", sizeof(unsigned int));
+  printf("size of unsigned long int: %lu\n", sizeof(unsigned long int));
+
   printf("arguments: %s, %s, %s\n", av[0], av[1], av[2]);
   if (ac >= 2 && !my_strcmp(av[1], "-alloc"))
     {

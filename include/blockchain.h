@@ -21,12 +21,15 @@ typedef struct		s_block
 
 typedef struct	s_bc
 {
+  int		size;
   t_block	*first;
   t_block	*last;
 }		t_bc;
 
 void	create_bc();
-void	add_block(unsigned int size);
 t_bc	*get_bc();
+t_bc	*new_bc();
+void	add_block(t_bc **blockchain, unsigned int size);
+void	add_block_with_chunks(t_bc **blockchain, unsigned int size);
 
 #endif	/* !_BLOCKCHAIN_H_ */

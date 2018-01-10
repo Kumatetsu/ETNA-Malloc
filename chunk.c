@@ -8,33 +8,17 @@
 ** Last update Wed Jan 10 05:54:56 2018 CASTELLARNAU Aurelien
 */
 
-#include "chunk.h"
 #include "blockchain.h"
+#include "chunk.h"
 #include <unistd.h>
 #include <stdio.h>
 
-/*
-** Memory allocation rules
-** 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024
-** 1920, 500, 250, 125, 60, 30, 15, 5, 2, 2, 1
-** total to init: 10 000
-*/
-static char *chunks[10];
+static t_bc *chunks[11];
 
-static void *one[5000];
 /*
-static void *two[500];
-static void *four[250];
-static void *eight[125];
-static void *sixteen[60];
-static void *t_two[30];
-static void *s_four[15];
-static void *ht_eight[5];
-static void *thf_six[2];
-static void *tt_four[1];
+** Convert any size in correspondant chunks index
+** a zero size will lead to an allocation of 1 octet
 */
-// convert any size in correspondant chunks index
-// a zero size will lead to an allocation of 1 octet
 int	define_index(unsigned int size)
 {
   if (size == 0)
@@ -63,25 +47,128 @@ int	define_index(unsigned int size)
     return -1;
 }
 
+/*
+** Initialise and fullfill a chainlist where each block
+** contain another chainlist containing memory spaces.
+** Memory spaces are organised as follow:
+** 1, 2, 4, 8, 16, 32, 64, 128, 512, 1024 octets
+** if > 1024, we call sbrk direct (see get_space_from_chunks)
+*/
 void	init_chunks()
 {
-  void	*internal_heap;
   int	ref;
 
   ref = -1;
-  internal_heap = sbrk(10);
+  while (++ref < 11)
+    chunks[ref] = new_bc();
   ref = 0;
-  while (ref <= 10)
+  while (ref < 192)
     {
-      one[ref] = internal_heap;
-      printf("internal_heap state: %p, index: %d", internal_heap, ref);
+      add_block(&chunks[0], 1);
       ++ref;
-      internal_heap = internal_heap + 1;
     }
-  chunks[0] = (char*)one;
+  ref = 0;
+  while (ref < 50)
+    {
+      add_block(&chunks[1], 2);
+      ++ref;
+    }
+  ref = 0;
+  while (ref < 25)
+    {
+      add_block(&chunks[2], 4);
+      ++ref;
+    }
+  ref = 0;
+  while (ref < 12)
+    {
+      add_block(&chunks[3], 8);
+      ++ref;
+    }
+  ref = 0;
+  while (ref < 6)
+    {
+      add_block(&chunks[4], 16);
+      ++ref;
+    }
+  ref = 0;
+  while (ref < 3)
+    {
+      add_block(&chunks[5], 32);
+      ++ref;
+    }
+  ref = 0;
+  while (ref < 1)
+    {
+      add_block(&chunks[6], 64);
+      ++ref;
+    }
+  ref = 0;
+  while (ref < 1)
+    {
+      add_block(&chunks[7], 128);
+      ++ref;
+    }
+  ref = 0;
+  while (ref < 1)
+    {
+      add_block(&chunks[8], 256);
+      ++ref;
+    }
+  ref = 0;
+  while (ref < 1)
+    {
+      add_block(&chunks[9], 512);
+      ++ref;
+    }
+  ref = 0;
+  while (ref < 1)
+    {
+      add_block(&chunks[10], 1024);
+      ++ref;
+    }
+  printf("check on chunks[index]: %p\n", chunks[4]);
 }
 
-char **get_chunks()
+/*
+** get_chunks singleton on chunks chainlist
+*/
+t_bc **get_chunks()
 {
+  if (chunks[0] == NULL)
+    init_chunks();
   return (chunks);
 }
+
+/*
+** get_space_from_chunks call define index to retrieve the good
+** size value, define if chunks can provide or 
+** if we need to make a new allocation
+*/
+t_block		*get_space_from_chunks(unsigned int size)
+{
+  int		index;
+  t_bc		**chunks;
+  t_block	*block;
+  
+  index = define_index(size);
+  chunks = get_chunks();
+  printf("get space from chunks with index: %d\n", index);
+  if (index == -1 || chunks[index] == NULL || !chunks[index]->size)
+    {
+      block = (t_block*)sbrk((intptr_t)(sizeof(t_block) + size));
+      block->size = size;
+      printf("allocate from scratch\n");
+    }
+  else
+    {
+      printf("allocate from chunks, on index: %d", index);
+      block = chunks[index]->last;
+      if (chunks[index]->last->prev != NULL)
+	chunks[index]->last = chunks[index]->last->prev;
+      chunks[index]->last->next = NULL;
+      chunks[index]->size--;
+    }
+  return block;
+}
+ 

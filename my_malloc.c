@@ -8,26 +8,23 @@
 ** Last update Wed Jan 10 05:55:54 2018 CASTELLARNAU Aurelien
 */
 
-#include "chunk.h"
 #include "blockchain.h"
+#include "chunk.h"
 #include "my_malloc.h"
 #include <unistd.h>
 #include <stdio.h>
 
+/*
+** my_simple_malloc is the central call to allocation logic
+*/
 void            *my_simple_malloc(unsigned int size)
 {
-  //t_bc		*bc;
-  void	       *space;
-  char		*arr;
-  char		**chunks;
-
-  init_chunks();
-  chunks = get_chunks();
-  //add_block(size);
-  //bc = get_bc();
-  arr = (char*)chunks[0];
-  space = &arr[0];
-  //  space = bc->last;
+  t_bc		*bc;
+  t_block       *space;
+  
+  bc = get_bc();
+  add_block_with_chunks(&bc, size);
+  space = bc->last;
   printf("allocated size: %d\n", size);
   printf("block adress: %p\n", space);
   printf("size of b: %lu\n", sizeof (*space));
@@ -36,12 +33,15 @@ void            *my_simple_malloc(unsigned int size)
   return (space + 1);
 }
 
+/*
+** my_simple_free is the central call for free logic
+*/
 void            my_simple_free(void *ptr)
 {
   t_block       *b;
 
   b = (((t_block *)ptr) - 1);
   printf("block to free address: %p\n", b);
-  //printf("allocated size: %d\n", b->size);
+  printf("allocated size: %d\n", b->size);
   printf("space to free address: %p\n", b + 1);
 }

@@ -11,7 +11,9 @@
 #ifndef  _CHUNK_H_
 # define _CHUNK_H_
 
+int	define_index(unsigned int size);
 void	init_chunks();
-char	**get_chunks();
+t_bc	**get_chunks();
+t_block	*get_space_from_chunks(unsigned int size);
 
 #endif  /* !_CHUNK_H_ */

@@ -5,17 +5,19 @@
 ** Login   <castel_a@etna-alternance.net>
 ** 
 ** Started on  Tue Jan  9 22:58:12 2018 CASTELLARNAU Aurelien
-** Last update Tue Jan  9 23:02:38 2018 CASTELLARNAU Aurelien
+** Last update Thu Jan 11 17:54:36 2018 BILLAUD Jean
 */
 
 #ifndef  _BLOCKCHAIN_H_
 # define _BLOCKCHAIN_H_
 
+enum Alloc {ALLOC, FREE};
+
 typedef struct		s_block
 {
   struct s_block	*next;
   struct s_block	*prev;
-  unsigned int		magic;
+  enum 	 Alloc	 	space;
   unsigned int		size;
 }			t_block;
 
@@ -29,6 +31,7 @@ typedef struct	s_bc
 void	create_bc();
 t_bc	*get_bc();
 t_bc	*new_bc();
+int	get_space_from_bc(t_bc **blockchain, unsigned int size);
 void	add_block(t_bc **blockchain, unsigned int size);
 void	add_block_with_chunks(t_bc **blockchain, unsigned int size);
 

@@ -5,7 +5,7 @@
 ** Login   <castel_a@etna-alternance.net>
 ** 
 ** Started on  Tue Jan  9 23:04:38 2018 CASTELLARNAU Aurelien
-** Last update Wed Jan 10 00:12:03 2018 CASTELLARNAU Aurelien
+** Last update Thu Jan 11 18:35:19 2018 BILLAUD Jean
 */
 
 #include "blockchain.h"
@@ -92,6 +92,40 @@ void		add_block(t_bc **blockchain, unsigned int size)
 
   if ((*blockchain) == NULL)
     (*blockchain) = new_bc();
-  b = sbrk(sizeof (*b) + size);
-  finalize_add_block(blockchain, b);
+  if (get_space_from_bc(blockchain, size))
+    {
+      printf("try to allocate from scratch \n");
+      b = (t_block*)sbrk((intptr_t)(sizeof(t_block) + size));
+      b->size = size;
+      finalize_add_block(blockchain, b);
+      printf("size needed is %d and allocated is %d\n", size, (*blockchain)->last->size);
+    }
+}
+ 
+int		get_space_from_bc(t_bc **blockchain, unsigned int size)
+{
+  t_block	*tmp;
+  t_block	*block;
+  
+  tmp = (*blockchain)->first;
+  printf("get space from bc \n");
+  printf("size needed %d\n", size);
+  while(tmp)
+    {
+      printf("block size is %d\n", size);
+      if (tmp->size >= size && tmp->space == FREE)
+	{
+	  block = tmp;
+	  block->prev->next = (*blockchain)->last;
+	  block->next->prev = (*blockchain)->last;
+	  (*blockchain)->last->prev = block->prev;
+	  (*blockchain)->last->next = block->next;
+	  (*blockchain)->last = block;
+	  block->space = ALLOC;
+	  printf("memory allocated from my memory bitches \n");
+	  return (0);
+	}
+      tmp = tmp->next;
+    }
+  return (1);
 }

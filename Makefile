@@ -5,7 +5,7 @@
 ## Login   <castel_a@etna-alternance.net>
 ## 
 ## Started on  Wed Feb  1 09:37:15 2017 CASTELLARNAU Aurelien
-## Last update Wed Sep 13 16:20:57 2017 BILLAUD Jean
+## Last update Wed Jan 10 16:14:15 2018 BILLAUD Jean
 ##
 
 CC      =       gcc
@@ -16,7 +16,7 @@ LIB     =       ./libmy
 
 CFLAGS  =       -W -Wextra -Werror -Wall -g -Iinclude/ -Ilibmy
 
-LDFLAGS =       -lzmq -lczmq -lpthread -L ./libmy -lmy
+LDFLAGS =       -lpthread -L ./libmy -lmy
 
 SRC     =       main.c \
 		blockchain.c \

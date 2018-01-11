@@ -5,7 +5,7 @@
 ** Login   <castel_a@etna-alternance.net>
 ** 
 ** Started on  Wed Jan 10 05:54:25 2018 CASTELLARNAU Aurelien
-** Last update Wed Jan 10 05:55:54 2018 CASTELLARNAU Aurelien
+** Last update Thu Jan 11 17:56:17 2018 BILLAUD Jean
 */
 
 #include "blockchain.h"
@@ -23,7 +23,7 @@ void            *my_simple_malloc(unsigned int size)
   t_block       *space;
   
   bc = get_bc();
-  add_block_with_chunks(&bc, size);
+  add_block(&bc, size);
   space = bc->last;
   printf("allocated size: %d\n", size);
   printf("block adress: %p\n", space);

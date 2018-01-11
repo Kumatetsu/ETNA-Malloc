@@ -5,13 +5,13 @@
 ** Login   <castel_a@etna-alternance.net>
 ** 
 ** Started on  Tue Jan  9 23:04:38 2018 CASTELLARNAU Aurelien
-** Last update Thu Jan 11 18:35:19 2018 BILLAUD Jean
+** Last update Thu Jan 11 22:03:11 2018 BILLAUD Jean
 */
 
-#include "blockchain.h"
-#include "chunk.h"
 #include <unistd.h>
 #include <stdio.h>
+#include "blockchain.h"
+#include "chunk.h"
 
 static t_bc *bc = NULL;
 
@@ -21,8 +21,7 @@ static t_bc *bc = NULL;
 */
 void	create_bc()
 {
-  if (bc == NULL)
-    bc = new_bc();
+  bc = new_bc();
 }
 
 /*
@@ -30,6 +29,8 @@ void	create_bc()
 */
 t_bc	*get_bc()
 {
+  if (bc == NULL)
+    create_bc();
   return bc;
 }
 
@@ -69,24 +70,10 @@ void	finalize_add_block(t_bc **blockchain, t_block *b)
 }
 
 /*
-** add_block_with_chunks must be call after init_chunks
-** this function will add block checking if some are available in chunks
-*/ 
-void		add_block_with_chunks(t_bc **blockchain, unsigned int size)
-{
-  t_block	*b;
-
-  if ((*blockchain) == NULL)
-    (*blockchain) = new_bc();
-  b = get_space_from_chunks(size);
-  finalize_add_block(blockchain, b);
-}
-
-/*
 ** Classic block creation without call to get_space_from_chunks
 ** this function is used in chunk initialisation process
 */
-void		add_block(t_bc **blockchain, unsigned int size)
+void		add_block(t_bc **blockchain, size_t size)
 {
   t_block	*b;
 
@@ -94,26 +81,21 @@ void		add_block(t_bc **blockchain, unsigned int size)
     (*blockchain) = new_bc();
   if (get_space_from_bc(blockchain, size))
     {
-      printf("try to allocate from scratch \n");
-      b = (t_block*)sbrk((intptr_t)(sizeof(t_block) + size));
+      b = (t_block*)sbrk((intptr_t)(sizeof(t_block) + (unsigned int)size));
       b->size = size;
       finalize_add_block(blockchain, b);
-      printf("size needed is %d and allocated is %d\n", size, (*blockchain)->last->size);
     }
 }
  
-int		get_space_from_bc(t_bc **blockchain, unsigned int size)
+int		get_space_from_bc(t_bc **blockchain, size_t  size)
 {
   t_block	*tmp;
   t_block	*block;
   
   tmp = (*blockchain)->first;
-  printf("get space from bc \n");
-  printf("size needed %d\n", size);
   while(tmp)
     {
-      printf("block size is %d\n", size);
-      if (tmp->size >= size && tmp->space == FREE)
+      if ((unsigned int)tmp->size >= (unsigned int)size && tmp->space == FREE)
 	{
 	  block = tmp;
 	  block->prev->next = (*blockchain)->last;
@@ -122,7 +104,6 @@ int		get_space_from_bc(t_bc **blockchain, unsigned int size)
 	  (*blockchain)->last->next = block->next;
 	  (*blockchain)->last = block;
 	  block->space = ALLOC;
-	  printf("memory allocated from my memory bitches \n");
 	  return (0);
 	}
       tmp = tmp->next;

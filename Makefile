@@ -1,44 +1,39 @@
 ##
-## Makefile for libmy_extended in /home/aurelien/Documents/Lib_etna/castel_a/libmy_extended
+## Makefile<ETNA-Malloc> for Malloc in /home/kumatetsu/ETNA-Malloc
 ## 
-## Made by CASTELLARNAU Aurelien
-## Login   <castel_a@etna-alternance.net>
+## Made by BILLAUD Jean
+## Login   <billau_j@etna-alternance.net>
 ## 
-## Started on  Wed Feb  1 09:37:15 2017 CASTELLARNAU Aurelien
-## Last update Wed Jan 10 16:14:15 2018 BILLAUD Jean
+## Started on  Thu Jan 11 21:48:05 2018 BILLAUD Jean
+## Last update Thu Jan 11 21:58:23 2018 BILLAUD Jean
 ##
 
-CC      =       gcc
+CC	=	gcc
 
-NAME    =       my_malloc
+NAME	=	libmy_malloc_$(shell uname).so
 
-LIB     =       ./libmy
+LNAME   =       libmy_malloc.so
 
-CFLAGS  =       -W -Wextra -Werror -Wall -g -Iinclude/ -Ilibmy
+CFLAGS  =	-W -Werror -Wextra -Wall -g -Iinclude/ -fPIC
 
-LDFLAGS =       -lpthread -L ./libmy -lmy
+LDFLAGS =	-shared
 
-SRC     =       main.c \
-		blockchain.c \
-		chunk.c \
-		my_malloc.c \
+SRC	= 	my_malloc.c 	\
+		blockchain.c	\
 
-OBJ     =       ${SRC:%.c=%.o}
+OBJ	=	${SRC:%.c=%.o}
 
-RM      =       rm -f
+RM	=	rm -f
 
-all	:	lib	$(NAME)
+PWD	:=	`pwd`
 
-lib	:
-		$(MAKE)	-C	$(LIB)
-
-libPar	:
-		$(MAKE)	-C	$(LIBPAR)
+all	:	${NAME}
 
 re	:	clean	all
 
 $(NAME)	:	$(OBJ)
 		$(CC)	$(CFLAGS)	$(OBJ)	$(LDFLAGS)	-o	$(NAME)
+		ln -s $(PWD)/$(NAME) $(LNAME)
 
 clean	:
 		$(RM)	$(OBJ)

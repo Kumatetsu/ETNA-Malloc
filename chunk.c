@@ -5,13 +5,13 @@
 ** Login   <castel_a@etna-alternance.net>
 ** 
 ** Started on  Wed Jan 10 03:53:29 2018 CASTELLARNAU Aurelien
-** Last update Wed Jan 10 05:54:56 2018 CASTELLARNAU Aurelien
+** Last update Thu Jan 11 21:04:07 2018 BILLAUD Jean
 */
 
-#include "blockchain.h"
-#include "chunk.h"
 #include <unistd.h>
 #include <stdio.h>
+#include "blockchain.h"
+#include "chunk.h"
 
 static t_bc *chunks[11];
 
@@ -156,8 +156,8 @@ t_block		*get_space_from_chunks(unsigned int size)
   printf("get space from chunks with index: %d\n", index);
   if (index == -1 || chunks[index] == NULL || !chunks[index]->size)
     {
-      block = (t_block*)sbrk((intptr_t)(sizeof(t_block) + size));
-      block->size = size;
+      block = (t_block*)sbrk((intptr_t)(sizeof(t_block) + size * 2));
+      block->size = size * 2;
       printf("allocate from scratch\n");
     }
   else

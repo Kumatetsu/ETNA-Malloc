@@ -5,7 +5,7 @@
 ** Login   <castel_a@etna-alternance.net>
 ** 
 ** Started on  Wed Jan 10 05:54:25 2018 CASTELLARNAU Aurelien
-** Last update Thu Jan 11 22:12:07 2018 BILLAUD Jean
+** Last update Fri Jan 12 16:47:02 2018 BILLAUD Jean
 */
 
 #include <unistd.h>
@@ -22,9 +22,11 @@ void            *malloc(size_t size)
   t_block       *space;
   
   bc = get_bc();
-  write(1, "ok", 3);
+  write(1, "get the bc!\n", 12);
   add_block(&bc, size);
+  write(1, "block added\n", 12);
   space = bc->last;
+  write(1, "space set\n", 10);
   return (space + 1);
 }
 
@@ -34,9 +36,14 @@ void            *malloc(size_t size)
 void            free(void *ptr)
 {
   t_block       *b;
-
-  b = (((t_block *)ptr) - 1);
-  b->space = FREE;
+  
+  if (ptr != NULL)
+    {
+      write(1, "in free\n", 8);
+      b = (((t_block *)ptr) - 1);
+      b->space = FREE;
+      write(1, "block freed\n", 12);
+    }
 }
 
 /*test*/

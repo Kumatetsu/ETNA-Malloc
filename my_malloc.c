@@ -5,7 +5,7 @@
 ** Login   <castel_a@etna-alternance.net>
 ** 
 ** Started on  Wed Jan 10 05:54:25 2018 CASTELLARNAU Aurelien
-** Last update Sat Jan 13 15:24:15 2018 BILLAUD Jean
+** Last update Sat Jan 13 16:45:10 2018 BILLAUD Jean
 */
 
 #include <unistd.h>
@@ -19,6 +19,9 @@ void            *malloc(size_t size)
 {
   t_bc		*bc;
   t_block       *space;
+
+  if (0 == size)
+    return NULL;
   
   bc = get_bc();
   //write(1, "get the bc!\n", 12);

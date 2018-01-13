@@ -5,7 +5,7 @@
 ## Login   <billau_j@etna-alternance.net>
 ## 
 ## Started on  Thu Jan 11 21:48:05 2018 BILLAUD Jean
-## Last update Thu Jan 11 21:58:23 2018 BILLAUD Jean
+## Last update Sat Jan 13 16:14:36 2018 BILLAUD Jean
 ##
 
 CC	=	gcc
@@ -19,9 +19,14 @@ CFLAGS  =	-W -Werror -Wextra -Wall -g -Iinclude/ -fPIC
 LDFLAGS =	-shared
 
 SRC	= 	my_malloc.c 	\
+		my_calloc.c	\
 		blockchain.c	\
 
+TSRC    =	main_calloc.c	\
+
 OBJ	=	${SRC:%.c=%.o}
+
+TOBJ    =	${TSRC:%.c=%.o}
 
 RM	=	rm -f
 
@@ -35,10 +40,13 @@ $(NAME)	:	$(OBJ)
 		$(CC)	$(CFLAGS)	$(OBJ)	$(LDFLAGS)	-o	$(NAME)
 		ln -s $(PWD)/$(NAME) $(LNAME)
 
+catest	:	$(TOBJ)
+		$(CC) $(CFLAGS)		$(TOBJ) 	-o	calloc_test
+
 clean	:
-		$(RM)	$(OBJ)
+		$(RM)	$(OBJ) $(TOBJ)
 
 fclean	:	clean
-		$(RM)	$(NAME)
+		$(RM)	$(NAME) $(LNAME) calloc_test
 
 .PHONY	:	all	clean	fclean

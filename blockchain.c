@@ -5,7 +5,7 @@
 ** Login   <castel_a@etna-alternance.net>
 ** 
 ** Started on  Tue Jan  9 23:04:38 2018 CASTELLARNAU Aurelien
-** Last update Fri Jan 12 17:32:51 2018 BILLAUD Jean
+** Last update Sat Jan 13 15:23:59 2018 BILLAUD Jean
 */
 
 #include <unistd.h>
@@ -21,7 +21,7 @@ static t_bc *bc = NULL;
 */
 void	create_bc()
 {
-  write(1, "init bc\n", 8);
+  //write(1, "init bc\n", 8);
   bc = new_bc();
 }
 
@@ -78,7 +78,7 @@ void		add_block(t_bc **blockchain, size_t size)
 {
   t_block	*b;
 
-  write(1, "begin add block\n", 16);
+  //write(1, "begin add block\n", 16);
   if ((*blockchain) == NULL)
     (*blockchain) = new_bc();
   if (get_space_from_bc(blockchain, size))
@@ -87,7 +87,7 @@ void		add_block(t_bc **blockchain, size_t size)
       b = (t_block*)sbrk((intptr_t)(sizeof(t_block) + (unsigned int)size));
       b->size = size;
       finalize_add_block(blockchain, b);
-      write(1, "block add from scratch\n", 23);
+      //write(1, "block add from scratch\n", 23);
     }
 }
 
@@ -110,12 +110,12 @@ int		get_space_from_bc(t_bc **blockchain, size_t  size)
   t_block	**block;
   
   tmp = (*blockchain)->first;
-  write(1, "try to allocate from bc\n", 24);
+  //write(1, "try to allocate from bc\n", 24);
   while(tmp)
     {
       if ((unsigned int)tmp->size >= (unsigned int)size && tmp->space == FREE)
 	{
-	  write(1, "ready for allocation\n", 21);
+	  //write(1, "ready for allocation\n", 21);
 	  block = &tmp;
 	  if ((*blockchain)->first != (*blockchain)->last)
 	    {
@@ -141,7 +141,7 @@ int		get_space_from_bc(t_bc **blockchain, size_t  size)
 		}
 	    }
 	  (*block)->space = ALLOC;
-	  write(1, "alloc should be fine\n", 22);
+	  //write(1, "alloc should be fine\n", 22);
 	  return (0);
 	}
       tmp = tmp->next;

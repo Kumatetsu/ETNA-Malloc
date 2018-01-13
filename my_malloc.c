@@ -5,13 +5,12 @@
 ** Login   <castel_a@etna-alternance.net>
 ** 
 ** Started on  Wed Jan 10 05:54:25 2018 CASTELLARNAU Aurelien
-** Last update Fri Jan 12 16:47:02 2018 BILLAUD Jean
+** Last update Sat Jan 13 15:24:15 2018 BILLAUD Jean
 */
 
 #include <unistd.h>
 #include <stdio.h>
 #include "blockchain.h"
-#include "chunk.h"
 #include "my_malloc.h"
 /*
 ** my_simple_malloc is the central call to allocation logic
@@ -22,11 +21,11 @@ void            *malloc(size_t size)
   t_block       *space;
   
   bc = get_bc();
-  write(1, "get the bc!\n", 12);
+  //write(1, "get the bc!\n", 12);
   add_block(&bc, size);
-  write(1, "block added\n", 12);
+  //write(1, "block added\n", 12);
   space = bc->last;
-  write(1, "space set\n", 10);
+  //write(1, "space set\n", 10);
   return (space + 1);
 }
 
@@ -39,10 +38,10 @@ void            free(void *ptr)
   
   if (ptr != NULL)
     {
-      write(1, "in free\n", 8);
+      //write(1, "in free\n", 8);
       b = (((t_block *)ptr) - 1);
       b->space = FREE;
-      write(1, "block freed\n", 12);
+      //write(1, "block freed\n", 12);
     }
 }
 

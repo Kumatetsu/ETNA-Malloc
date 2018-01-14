@@ -5,7 +5,7 @@
 ## Login   <billau_j@etna-alternance.net>
 ## 
 ## Started on  Thu Jan 11 21:48:05 2018 BILLAUD Jean
-## Last update Sat Jan 13 16:29:24 2018 BILLAUD Jean
+## Last update Sun Jan 14 15:27:24 2018 BILLAUD Jean
 ##
 
 CC	=	gcc
@@ -20,6 +20,7 @@ LDFLAGS =	-shared
 
 SRC	= 	my_malloc.c 	\
 		my_calloc.c	\
+		my_realloc.c	\
 		blockchain.c	\
 
 TSRC    =	main_calloc.c	\

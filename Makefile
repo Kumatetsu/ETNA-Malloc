@@ -5,7 +5,7 @@
 ## Login   <billau_j@etna-alternance.net>
 ## 
 ## Started on  Thu Jan 11 21:48:05 2018 BILLAUD Jean
-## Last update Sat Jan 13 16:29:24 2018 BILLAUD Jean
+## Last update Mon Jan 15 17:01:51 2018 BILLAUD Jean
 ##
 
 CC	=	gcc
@@ -20,15 +20,24 @@ LDFLAGS =	-shared
 
 SRC	= 	my_malloc.c 	\
 		my_calloc.c	\
+		my_realloc.c	\
 		blockchain.c	\
 
-TSRC    =	main_calloc.c	\
+CTSRC    =	main_calloc.c	\
 
-OBJ	=	${SRC:%.c=%.o}
+MTSRC    =	main.c		\
 
-TOBJ    =	${TSRC:%.c=%.o}
+RTSRC    =      main_realloc.c	\
 
-RM	=	rm -f
+OBJ	 =	${SRC:%.c=%.o}
+
+CTOBJ    =	${CTSRC:%.c=%.o}
+
+MTOBJ    =	${MTSRC:%.c=%.o}
+
+RTOBJ    = 	${RTSRC:%.c=%.o}
+
+RM	 =	rm -f
 
 PWD	:=	`pwd`
 
@@ -40,13 +49,19 @@ $(NAME)	:	$(OBJ)
 		$(CC)	$(CFLAGS)	$(OBJ)	$(LDFLAGS)	-o	$(NAME)
 		ln -s $(PWD)/$(NAME) $(LNAME)
 
-catest	:	$(TOBJ)
-		$(CC) $(CFLAGS)		$(TOBJ) 	-o	calloc_test
+catest	:	$(CTOBJ)
+		$(CC) $(CFLAGS)		$(CTOBJ) 	-o	calloc_test
+
+matest	:	$(MTOBJ)
+		$(CC) $(CFLAGS)		$(MTOBJ)	-o	malloc_test
+
+retest	:	$(RTOBJ)
+		$(CC) $(CFLAGS)		$(RTOBJ)	-o	realloc_test
 
 clean	:
-		$(RM)	$(OBJ) $(TOBJ)
+		$(RM)	$(OBJ) $(CTOBJ) $(MTOBJ) $(LNAME)
 
 fclean	:	clean
-		$(RM)	$(NAME) $(LNAME) calloc_test
+		$(RM)	$(NAME) $(LNAME) calloc_test malloc_test realloc_test
 
 .PHONY	:	all	clean	fclean
